@@ -2,7 +2,7 @@
   <NavBar />
   <main class="main">
     <div v-for="poke in pokemons" :key="poke.id" class="card-body">
-      <RouterLink to="/PokemonDetalhamento">
+      <router-link :to="{ name: 'detalhes', params: { id: poke.id } }">
         <p class="pokemonID"># {{ poke.id }}</p>
 
         <img
@@ -11,7 +11,7 @@
           class="pokemonSprite"
         />
         <p class="pokemonNome">{{ poke.name }}</p>
-      </RouterLink>
+      </router-link>
     </div>
 
     <div v-if="loading" class="mt-4 text-center">Carregando mais...</div>

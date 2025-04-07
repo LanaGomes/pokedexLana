@@ -8,8 +8,10 @@ import PokemonDetalhamento from "../views/PokemonDetalhamento.vue";
 const routes = [
   { path: "/", component: Home },
   {
-    path: "/PokemonDetalhamento",
+    path: "/PokemonDetalhamento/:id",
+    name: "detalhes",
     component: () => import("../views/PokemonDetalhamento.vue"),
+    props: true,
   },
 ];
 
