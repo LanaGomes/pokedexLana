@@ -2,14 +2,16 @@
   <NavBar />
   <main class="main">
     <div v-for="poke in pokemons" :key="poke.id" class="card-body">
-      <p class="pokemonID"># {{ poke.id }}</p>
+      <RouterLink to="/PokemonDetalhamento">
+        <p class="pokemonID"># {{ poke.id }}</p>
 
-      <img
-        :src="poke.sprites.front_default"
-        :alt="poke.name"
-        class="pokemonSprite"
-      />
-      <p class="pokemonNome">{{ poke.name }}</p>
+        <img
+          :src="poke.sprites.front_default"
+          :alt="poke.name"
+          class="pokemonSprite"
+        />
+        <p class="pokemonNome">{{ poke.name }}</p>
+      </RouterLink>
     </div>
 
     <div v-if="loading" class="mt-4 text-center">Carregando mais...</div>
@@ -21,6 +23,7 @@
 import { onMounted, onBeforeUnmount, ref } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
+import { RouterLink } from "vue-router";
 
 const pokemons = ref([]);
 const loading = ref(false);
@@ -88,12 +91,13 @@ main {
 
   display: flex;
   flex-direction: column;
+  text-align: right;
+  align-items: center;
   width: 12rem;
 }
 
 .pokemonID {
   margin: 0.6rem 0.6rem 0 0;
-  text-align: end;
 }
 
 .pokemonNome {
