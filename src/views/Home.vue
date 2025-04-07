@@ -1,14 +1,15 @@
 <template>
   <NavBar />
   <main class="main">
-    <div
-      v-for="poke in pokemons"
-      :key="poke.id"
-      class="card-body border mb-4 p-4 rounded shadow"
-    >
-      <p><strong>ID:</strong> {{ poke.id }}</p>
-      <p><strong>Nome:</strong> {{ poke.name }}</p>
-      <img :src="poke.sprites.front_default" :alt="poke.name" />
+    <div v-for="poke in pokemons" :key="poke.id" class="card-body">
+      <p class="pokemonID"># {{ poke.id }}</p>
+
+      <img
+        :src="poke.sprites.front_default"
+        :alt="poke.name"
+        class="pokemonSprite"
+      />
+      <p class="pokemonNome">{{ poke.name }}</p>
     </div>
 
     <div v-if="loading" class="mt-4 text-center">Carregando mais...</div>
@@ -69,11 +70,37 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-body {
+main {
+  flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
-  gap: 50px;
-  margin: 0;
-  font-family: Arial, sans-serif;
+  gap: 10px;
+  margin: 2rem 1.5rem 1rem 1.5rem;
+  color: rgb(32, 32, 32);
+}
+
+.card-body {
+  border: 1px;
+  border-color: rgb(175, 175, 175);
+  border-radius: 15px;
+  border-style: solid;
+  box-shadow: 5px 4px 8px rgb(175, 175, 175);
+
+  display: flex;
+  flex-direction: column;
+  width: 12rem;
+}
+
+.pokemonID {
+  margin: 0.6rem 0.6rem 0 0;
+  text-align: end;
+}
+
+.pokemonSprite {
+}
+
+.pokemonNome {
+  text-align: center;
+  margin: 0 0 5px 0;
 }
 </style>
