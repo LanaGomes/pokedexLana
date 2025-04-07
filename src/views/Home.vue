@@ -96,9 +96,6 @@ main {
   text-align: end;
 }
 
-.pokemonSprite {
-}
-
 .pokemonNome {
   text-align: center;
   margin: 0 0 5px 0;

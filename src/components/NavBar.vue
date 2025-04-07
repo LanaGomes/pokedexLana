@@ -7,10 +7,13 @@
 
 <script></script>
 
-<style>
+<style scoped>
 .navbar {
   background-color: #d75757;
   padding: 2rem;
-  width: 100%;
+}
+
+img {
+  margin-left: 0.3rem;
 }
 </style>
