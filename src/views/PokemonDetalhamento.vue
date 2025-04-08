@@ -27,15 +27,30 @@
     >
       {{ item.type.name }}
     </div>
-    <div
-      class="pokemonEvolucoes"
-      v-for="(item, index) in pokemon?.types"
-      :key="index"
-    >
-      {{ item.type.name }}
+    <div>
+      <h2>Evoluções</h2>
+      {/*...*/}
     </div>
-    <div class="pokemonAtaques"></div>
-    <div class="pokemonGameIndices"></div>
+    <div class="pokemonAtaques">
+      <h2>Ataques</h2>
+      <div
+        v-for="(item, index) in pokemon?.moves"
+        :key="index"
+        class="pokemonAtaques"
+      >
+        {{ item.move.name }}
+      </div>
+    </div>
+    <div class="pokemonGameIndices">
+      <h2>Presença nos Games</h2>
+      <div
+        v-for="(item, index) in pokemon?.game_indices"
+        :key="index"
+        class="pokemonGameIndices"
+      >
+        {{ item.version.name }}
+      </div>
+    </div>
   </footer>
 </template>
 
