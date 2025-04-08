@@ -14,8 +14,8 @@
       </router-link>
     </div>
 
-    <div v-if="loading" class="mt-4 text-center">Carregando mais...</div>
-    <div v-if="error" class="alert alert-danger mt-4">{{ error }}</div>
+    <div v-if="loading">Carregando mais...</div>
+    <div v-if="error">{{ error }}</div>
   </main>
 </template>
 
