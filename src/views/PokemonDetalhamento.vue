@@ -12,12 +12,8 @@
     </div>
     <h4># {{ pokemon?.id }}</h4>
   </header>
-  <section>
-    <img
-      :src="pokemon?.sprites.front_default"
-      :alt="pokemon?.name"
-      class="pokemonSprite"
-    />
+  <section v-for="(sprite, index) in pokemon?.sprites" class="pokemonSprites">
+    <img v-if="sprite != null" :src="sprite" class="pokemonSprite" />
   </section>
   <footer>
     <div
