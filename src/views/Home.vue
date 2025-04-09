@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <div class="searchAndFilter">
+  <div class="search">
     <button @click="alternarTipo" class="botaoAlternar">
       {{ tipo === "A" ? "#" : "A" }}
     </button>
@@ -11,6 +11,22 @@
       :placeholder="tipo === 'A' ? 'Digite o nome' : 'Digite o ID'"
     />
     <img class="searchLogo" src="/src/assets/search.png" />
+  </div>
+
+  <div class="filterContainer">
+    <header>Filtrar</header>
+
+    <select>
+      <option disabled value="">Selecione um tipo</option>
+      <option
+        class="optionTipo"
+        v-for="(type, index) in types"
+        :key="type"
+        :value="type"
+      >
+        {{ type }}
+      </option>
+    </select>
   </div>
   <main class="main">
     <div v-for="poke in pokemons" :key="poke.id" class="card-body">
@@ -36,6 +52,14 @@ import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
 
+//Array tipos de pokemon
+const types = ref("#");
+onMounted(async () => {
+  const response = await fetch("https://pokeapi.co/api/v2/type/");
+  const data = await response.json();
+  types.value = data.results.map((tipo) => tipo.name);
+});
+
 // Alternar tipo de entrada campo buscar
 const tipo = ref("#");
 const valor = ref("");
@@ -49,13 +73,12 @@ const pokemons = ref([]);
 const loading = ref(false);
 const error = ref("");
 const offset = ref(0);
-const limit = 20;
+const limit = 100;
 
 // Função principal
 async function fetchPokemons() {
   loading.value = true;
   error.value = "";
-  pokemons.value = [];
 
   try {
     const busca = valor.value.toString().trim();
@@ -135,10 +158,14 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+li {
+  list-style: none;
+}
 main {
   flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   gap: 10px;
   margin: 2rem 1.5rem 1rem 1.5rem;
   color: rgb(32, 32, 32);
@@ -167,10 +194,10 @@ main {
   margin: 0 0 5px 0;
 }
 
-.searchAndFilter {
-  margin: 1rem;
+.search {
+  margin: 2rem 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
@@ -184,6 +211,7 @@ main {
 
 .inputBuscar {
   color: black;
+  width: 50%;
   font-size: 1rem;
   padding: 1rem;
   border-radius: 50px;
@@ -195,5 +223,31 @@ main {
 .searchLogo {
   height: 2rem;
   margin-left: 0.5rem;
+}
+
+.filterContainer {
+  display: flex;
+  margin: 1rem 0;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.filterContainer img {
+  height: 1.5rem;
+  margin: 0 0.2rem;
+}
+
+.filterContainer select {
+  font-size: 1rem;
+  padding: 0.5rem;
+  background-color: white;
+  color: rgb(41, 41, 41);
+  margin-left: 1rem;
+  border-color: #d75757;
+  border-radius: 5px;
+}
+.filterContainer header {
+  color: #d75757;
 }
 </style>
