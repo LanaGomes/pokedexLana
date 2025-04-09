@@ -1,5 +1,17 @@
 <template>
   <NavBar />
+  <div class="searchAndFilter">
+    <button @click="alternarTipo" class="botaoAlternar">
+      {{ tipo === "A" ? "#" : "A" }}
+    </button>
+    <input
+      class="inputBuscar"
+      :type="tipo === 'A' ? 'text' : 'number'"
+      v-model="valor"
+      :placeholder="tipo === 'A' ? 'Digite o nome' : 'Digite o ID'"
+    />
+    <img class="searchLogo" src="/src/assets/search.png" />
+  </div>
   <main class="main">
     <div v-for="poke in pokemons" :key="poke.id" class="card-body">
       <router-link :to="{ name: 'detalhes', params: { id: poke.id } }">
@@ -20,44 +32,94 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount, ref } from "vue";
+import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
-import { RouterLink } from "vue-router";
 
+// Alternar tipo de entrada campo buscar
+const tipo = ref("#");
+const valor = ref("");
+
+const alternarTipo = () => {
+  tipo.value = tipo.value === "A" ? "#" : "A";
+};
+
+// importar e carregar pokemons
 const pokemons = ref([]);
 const loading = ref(false);
 const error = ref("");
 const offset = ref(0);
 const limit = 20;
 
+// Função principal
 async function fetchPokemons() {
   loading.value = true;
+  error.value = "";
+  pokemons.value = [];
+
   try {
-    const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset.value}`
-    );
-    const results = response.data.results;
+    const busca = valor.value.toString().trim();
 
-    const details = await Promise.all(
-      results.map((poke) => axios.get(poke.url).then((res) => res.data))
-    );
+    if (busca !== "") {
+      if (tipo.value === "#") {
+        const id = parseInt(busca);
+        if (isNaN(id)) {
+          error.value = "ID inválido.";
+          return;
+        }
 
-    pokemons.value.push(...details);
-    offset.value += limit;
+        const response = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${id}`
+        );
+        pokemons.value = [response.data];
+      } else {
+        const response = await axios.get(
+          `https://pokeapi.co/api/v2/pokemon/${busca.toLowerCase()}`
+        );
+        pokemons.value = [response.data];
+      }
+    } else {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset.value}`
+      );
+
+      const results = response.data.results;
+
+      const details = await Promise.all(
+        results.map((poke) => axios.get(poke.url).then((res) => res.data))
+      );
+
+      pokemons.value.push(...details);
+      offset.value += limit;
+    }
   } catch (err) {
-    error.value = "Erro ao carregar os Pokémons.";
+    error.value = "Pokémon não encontrado.";
   } finally {
     loading.value = false;
   }
 }
+// Debounce manual
+let debounceTimeout;
+watch(valor, () => {
+  clearTimeout(debounceTimeout);
+  debounceTimeout = setTimeout(() => {
+    offset.value = 0;
+    pokemons.value = [];
+    fetchPokemons();
+  }, 500); // Espera 500ms após parar de digitar
+});
 
+// Scroll infinito
 function handleScroll() {
   const scrollTop = window.scrollY;
   const windowHeight = window.innerHeight;
   const documentHeight = document.documentElement.scrollHeight;
 
-  if (scrollTop + windowHeight >= documentHeight - 10 && !loading.value) {
+  if (
+    scrollTop + windowHeight >= documentHeight - 10 &&
+    !loading.value &&
+    valor.value.trim() === ""
+  ) {
     fetchPokemons();
   }
 }
@@ -103,5 +165,35 @@ main {
 .pokemonNome {
   text-align: center;
   margin: 0 0 5px 0;
+}
+
+.searchAndFilter {
+  margin: 1rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.botaoAlternar {
+  padding: 1rem 1.2rem;
+  margin: 0 0.5rem;
+  border-radius: 50px;
+  border-style: none;
+  background-color: #d75757;
+}
+
+.inputBuscar {
+  color: black;
+  font-size: 1rem;
+  padding: 1rem;
+  border-radius: 50px;
+  border-style: none;
+  background-color: white;
+  box-shadow: inset -2px 2px 3px 2px rgba(32, 32, 32, 0.2);
+}
+
+.searchLogo {
+  height: 2rem;
+  margin-left: 0.5rem;
 }
 </style>
