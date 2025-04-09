@@ -1,5 +1,10 @@
 <template>
-  <div class="backgroundPokemon">
+  <div
+    class="backgroundPokemon"
+    :style="{
+      backgroundColor: typeColors[pokemon?.types?.[0]?.type?.name] || '#78B991',
+    }"
+  >
     <header class="headerDetalhes">
       <div class="nomePokemonContainer">
         <RouterLink to="/">
@@ -12,14 +17,12 @@
       <h4># {{ pokemon?.id }}</h4>
     </header>
 
-    <!-- Carrossel de Sprites com Setas -->
     <section class="pokemonSprites">
       <Carousel v-bind="carouselConfig">
         <Slide v-for="(sprite, index) in pokemonSprites" :key="index">
           <img :src="sprite" class="pokemonSprite" />
         </Slide>
 
-        <!-- Setas de Navegação -->
         <template #addons>
           <Navigation />
           <Pagination />
@@ -28,16 +31,15 @@
     </section>
   </div>
   <footer>
-    <!-- Tipos -->
     <div
       v-for="(item, index) in pokemon?.types"
       :key="index"
+      :style="{ backgroundColor: typeColors[item.type.name] || '#f1f1f1' }"
       class="pokemonTipos"
     >
       {{ item.type.name }}
     </div>
 
-    <!-- Evoluções -->
     <div class="pokemonEvolucoes">
       <h2>Evoluções</h2>
       <div v-for="(item, index) in pokemonEvolutions" :key="index">
@@ -45,7 +47,6 @@
       </div>
     </div>
 
-    <!-- Ataques -->
     <div class="pokemonAtaques">
       <h2>Ataques</h2>
       <div v-for="(item, index) in pokemon?.moves" :key="index">
@@ -53,7 +54,6 @@
       </div>
     </div>
 
-    <!-- Presença nos games -->
     <div class="pokemonGameIndices">
       <h2>Presença nos Games</h2>
       <div v-for="(item, index) in pokemon?.game_indices" :key="index">
@@ -68,7 +68,6 @@ import { RouterLink, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, computed } from "vue";
 
-// Importa o carrossel e as setas
 import "vue3-carousel/carousel.css";
 import { Carousel, Slide, Navigation, Pagination } from "vue3-carousel";
 
@@ -81,26 +80,22 @@ const pokemon = ref(null);
 const pokemonSpecies = ref(null);
 const pokemonEvolutions = ref([]);
 
-// Configuração do carrossel
 const carouselConfig = {
   itemsToShow: 1,
   wrapAround: true,
   autoplay: false,
 };
 
-// Computa os sprites válidos e únicos
 const pokemonSprites = computed(() => {
   if (!pokemon.value || !pokemon.value.sprites) return [];
 
   const spriteObject = pokemon.value.sprites;
   const spriteList = [];
 
-  // Primeiro: front_default
   if (spriteObject.front_default) {
     spriteList.push(spriteObject.front_default);
   }
 
-  // Adiciona outros sprites únicos
   Object.entries(spriteObject).forEach(([key, value]) => {
     if (
       typeof value === "string" &&
@@ -114,7 +109,6 @@ const pokemonSprites = computed(() => {
   return spriteList;
 });
 
-// Carrega dados da API
 async function fetchPokemon() {
   loading.value = true;
   try {
@@ -153,11 +147,32 @@ async function fetchPokemon() {
 }
 
 fetchPokemon();
+
+const typeColors = {
+  grass: "#63c781",
+  fire: "#e08b4f",
+  water: "#768fc9",
+  bug: "#313131",
+  normal: "#A8A878",
+  poison: "#966c96",
+  electric: "#e0c865",
+  ground: "#978451",
+  fairy: "#EE99AC",
+  fighting: "#C03028",
+  psychic: "#F85888",
+  rock: "#757575",
+  ghost: "#705898",
+  ice: "#98D8D8",
+  dragon: "#8d68e6",
+  dark: "#1b1b1b",
+  steel: "#B8B8D0",
+  flying: "#dad6e6",
+};
 </script>
 
 <style scoped>
 * {
-  color: black;
+  color: #0e0e0e;
 }
 
 .headerDetalhes {
