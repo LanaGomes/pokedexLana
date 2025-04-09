@@ -56,7 +56,6 @@ import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
 
-// Filtrar por tipo
 const tipoPokemonSelecionado = ref("");
 const filtrarPokemonPorTipo = async () => {
   if (!tipoPokemonSelecionado.value) return;
@@ -85,7 +84,6 @@ const filtrarPokemonPorTipo = async () => {
   }
 };
 
-// Lista de tipos de Pokémon
 const tiposPokemon = ref("#");
 
 onMounted(async () => {
@@ -94,7 +92,6 @@ onMounted(async () => {
   tiposPokemon.value = data.results.map((tipo) => tipo.name);
 });
 
-// Modo de busca: por nome (A) ou por ID (#)
 const modoBusca = ref("#");
 const valorBusca = ref("");
 
@@ -102,7 +99,6 @@ const alternarModoBusca = () => {
   modoBusca.value = modoBusca.value === "A" ? "#" : "A";
 };
 
-// Controle de dados dos pokémons
 const listaPokemons = ref([]);
 const carregando = ref(false);
 const mensagemErro = ref("");
@@ -157,14 +153,12 @@ async function carregarPokemons() {
   }
 }
 
-// Debounce na busca
 let tempoDebounce;
 watch(valorBusca, () => {
   clearTimeout(tempoDebounce);
   tempoDebounce = setTimeout(async () => {
     const termoBusca = String(valorBusca.value).trim();
 
-    // Se o filtro estiver ativo e o usuário digitou algo: resetar filtro
     if (tipoPokemonSelecionado.value && termoBusca !== "") {
       tipoPokemonSelecionado.value = "";
       listaPokemons.value = [];
@@ -175,7 +169,6 @@ watch(valorBusca, () => {
   }, 500);
 });
 
-// Scroll infinito
 function aoRolarPagina() {
   const topoScroll = window.scrollY;
   const alturaJanela = window.innerHeight;
