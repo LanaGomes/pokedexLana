@@ -23,11 +23,10 @@
         tipoBuscaSelecionado === 'id' ? 'Digite o ID' : 'Digite o nome'
       "
     />
-    <img class="icone-busca" src="/src/assets/search.png" />
   </div>
 
   <div class="barra-busca" v-if="tipoBuscaSelecionado === 'tipo'">
-    <select v-model="valorBusca" @change="carregarPokemons">
+    <select class="opcoesTipo" v-model="valorBusca" @change="carregarPokemons">
       <option disabled value="">Selecione um tipo</option>
       <option v-for="tipo in tiposPokemon" :key="tipo" :value="tipo">
         {{ tipo }}
@@ -277,34 +276,24 @@ const typeColors = {
   box-shadow: inset -2px 2px 3px 2px rgba(32, 32, 32, 0.2);
 }
 
-.icone-busca {
-  height: 2rem;
-  margin-left: 0.5rem;
-}
-
-.filtro-tipo {
-  display: flex;
-  margin: 1rem 0;
-  justify-content: center;
-  align-items: center;
-}
-
-.titulo-filtro {
-  color: #d75757;
-}
-
-.filtro-tipo select {
+.opcoesDePesquisa,
+.opcoesTipo {
   font-size: 1rem;
-  padding: 0.5rem;
+  padding: 0.5rem 2rem;
   background-color: white;
   color: rgb(41, 41, 41);
   margin-left: 1rem;
   border-color: #d75757;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
-.opcao-tipo {
-  text-transform: capitalize;
+.opcoesDePesquisa {
+}
+
+.opcoesDePesquisaContainer {
+  display: flex;
+  margin: 2rem;
+  color: #d75757;
 }
 
 .mensagem-carregando,
