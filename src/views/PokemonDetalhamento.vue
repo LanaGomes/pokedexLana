@@ -74,7 +74,7 @@
       >
         <img
           class="imgGameIndice"
-          :src="`/src/assets/game_indices/${item.version.name}.jpg`"
+          :src="`/src/assets/${item.version.name}.jpg`"
         />
         {{ capitalizeFirstLetter(item.version.name) }}
       </div>
