@@ -8,7 +8,7 @@
     <header class="headerDetalhes">
       <div class="nomePokemonContainer">
         <RouterLink to="/">
-          <img id="imgSeta" src="/src/assets/setaParaEsquerda.png" />
+          <img id="imgSeta" src="/public/setaParaEsquerda.png" />
         </RouterLink>
         <h4 v-if="loading">Carregando...</h4>
         <h4 v-if="error">{{ error }}</h4>
@@ -72,10 +72,7 @@
         v-for="(item, index) in pokemon?.game_indices"
         :key="index"
       >
-        <img
-          class="imgGameIndice"
-          :src="`/src/assets/${item.version.name}.jpg`"
-        />
+        <img class="imgGameIndice" :src="`/public/${item.version.name}.jpg`" />
         {{ capitalizeFirstLetter(item.version.name) }}
       </div>
       <div

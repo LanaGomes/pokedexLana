@@ -67,7 +67,7 @@
       <img
         class="gif-carregando"
         alt="carregando..."
-        src="/src/assets/carregando.gif"
+        src="/public/carregando.gif"
       />
     </div>
     <div v-if="mensagemErro" class="mensagem-erro">{{ mensagemErro }}</div>

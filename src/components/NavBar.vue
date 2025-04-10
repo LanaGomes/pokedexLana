@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
-    <img src="/src/assets/pokeball.png" />
-    <img src="/src/assets/pokedex.png" />
+    <img src="/public/pokeball.png" />
+    <img src="/public/pokedex.png" />
   </nav>
 </template>
 
