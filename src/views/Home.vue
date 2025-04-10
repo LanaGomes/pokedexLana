@@ -55,7 +55,7 @@
           class="sprite-pokemon"
         />
         <p style="color: aliceblue" class="nome-pokemon">
-          {{ pokemon.name }}
+          {{ capitalizeFirstLetter(pokemon.name) }}
         </p>
         <div
           v-for="(item, index) in pokemon?.types"
@@ -91,6 +91,11 @@ const carregando = ref(false);
 const mensagemErro = ref("");
 const paginacaoOffset = ref(0);
 const quantidadePorPagina = 500;
+
+function capitalizeFirstLetter(string) {
+  if (!string) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 
 onMounted(async () => {
   await carregarPokemons();

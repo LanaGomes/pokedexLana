@@ -12,7 +12,7 @@
         </RouterLink>
         <h4 v-if="loading">Carregando...</h4>
         <h4 v-if="error">{{ error }}</h4>
-        <h3>{{ pokemon?.name }}</h3>
+        <h3>{{ capitalizeFirstLetter(pokemon?.name) }}</h3>
       </div>
       <h4># {{ pokemon?.id }}</h4>
     </header>
@@ -31,13 +31,15 @@
     </section>
   </div>
   <footer>
-    <div
-      v-for="(item, index) in pokemon?.types"
-      :key="index"
-      :style="{ backgroundColor: typeColors[item.type.name] || '#f1f1f1' }"
-      class="pokemonTipos"
-    >
-      {{ item.type.name }}
+    <div class="pokemonTiposContainer">
+      <div
+        v-for="(item, index) in pokemon?.types"
+        :key="index"
+        :style="{ backgroundColor: typeColors[item.type.name] || '#f1f1f1' }"
+        class="pokemonTipos"
+      >
+        {{ item.type.name }}
+      </div>
     </div>
 
     <div class="pokemonEvolucoes">
@@ -53,11 +55,18 @@
         {{ item.move.name }}
       </div>
     </div>
-
+    <h2>Presença nos Games</h2>
     <div class="pokemonGameIndices">
-      <h2>Presença nos Games</h2>
-      <div v-for="(item, index) in pokemon?.game_indices" :key="index">
-        {{ item.version.name }}
+      <div
+        class="imgGameContainer"
+        v-for="(item, index) in pokemon?.game_indices"
+        :key="index"
+      >
+        <img
+          class="imgGameIndice"
+          :src="`/src/assets/game_indices/${item.version.name}.jpg`"
+        />
+        {{ capitalizeFirstLetter(item.version.name) }}
       </div>
     </div>
   </footer>
@@ -70,6 +79,11 @@ import { ref, computed } from "vue";
 
 import "vue3-carousel/carousel.css";
 import { Carousel, Slide, Navigation, Pagination } from "vue3-carousel";
+
+function capitalizeFirstLetter(string) {
+  if (!string) return string;
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 
 const route = useRoute();
 const id = route.params.id;
@@ -152,7 +166,7 @@ const typeColors = {
   grass: "#63c781",
   fire: "#e08b4f",
   water: "#768fc9",
-  bug: "#313131",
+  bug: "#535353",
   normal: "#A8A878",
   poison: "#966c96",
   electric: "#e0c865",
@@ -172,12 +186,12 @@ const typeColors = {
 
 <style scoped>
 * {
-  color: #0e0e0e;
+  color: #070707;
 }
 
 .headerDetalhes {
   background-color: transparent;
-  padding: 0.5rem;
+  padding: 0.2rem 0.5rem;
   display: flex;
   justify-content: space-between;
   margin: 0 1rem;
@@ -186,6 +200,14 @@ const typeColors = {
 .nomePokemonContainer {
   display: flex;
   align-items: center;
+}
+
+.nomePokemonContainer h3,
+h4 {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 #imgSeta {
@@ -203,13 +225,19 @@ const typeColors = {
   height: 15rem;
   width: auto;
   display: block;
-  margin: 0 auto;
+  margin: 1.5rem;
+}
+
+.pokemonTiposContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .pokemonTipos {
-  display: inline-block;
   margin: 0.3rem;
-  padding: 0.3rem 0.6rem;
+  padding: 0.5rem 2rem;
   background-color: #f1f1f1;
   border-radius: 8px;
   text-transform: capitalize;
@@ -221,7 +249,25 @@ const typeColors = {
   margin-top: 2rem;
 }
 
+.pokemonGameIndices {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.imgGameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .backgroundPokemon {
   background-color: rgb(120, 185, 145);
+}
+
+.imgGameIndice {
+  height: 8rem;
+  width: 8rem;
 }
 </style>
