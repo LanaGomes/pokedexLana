@@ -58,12 +58,25 @@
       </div>
     </div>
     <div class="pokemonAtaques">
-      <h2 class="tituloSessao">Ataques</h2>
-      <template class="ataquesContainer">
-        <div v-for="(item, index) in pokemon?.moves" :key="index">
-          {{ capitalizeFirstLetter(item.move.name) }}
+      <h2 class="tituloSessao">Ataques por Nível</h2>
+      <div class="ataquesPorNivelContainer">
+        <div
+          v-for="(ataques, nivel) in ataquesPorNivel"
+          :key="nivel"
+          class="grupoNivel"
+        >
+          <h3 class="nivelHeader">Nível {{ nivel }}</h3>
+          <div class="ataquesContainer">
+            <div
+              v-for="(ataque, index) in ataques"
+              :key="index"
+              class="ataqueCard"
+            >
+              {{ ataque }}
+            </div>
+          </div>
         </div>
-      </template>
+      </div>
     </div>
     <h2 class="tituloSessao">Presença nos Games</h2>
     <div class="pokemonGameIndices">
@@ -195,6 +208,32 @@ const typeColors = {
   steel: "#B8B8D0",
   flying: "#dad6e6",
 };
+
+const ataquesPorNivel = computed(() => {
+  const agrupados = {};
+
+  if (!pokemon.value) return agrupados;
+
+  pokemon.value.moves.forEach((move) => {
+    const levelUpInfo = move.version_group_details.find(
+      (v) => v.move_learn_method.name === "level-up"
+    );
+
+    if (levelUpInfo && levelUpInfo.level_learned_at > 0) {
+      const nivel = levelUpInfo.level_learned_at;
+
+      if (!agrupados[nivel]) agrupados[nivel] = [];
+      agrupados[nivel].push(capitalizeFirstLetter(move.move.name));
+    }
+  });
+
+  return Object.keys(agrupados)
+    .sort((a, b) => a - b)
+    .reduce((acc, key) => {
+      acc[key] = agrupados[key];
+      return acc;
+    }, {});
+});
 </script>
 
 <style scoped>
@@ -283,13 +322,9 @@ h4 {
 
 .ataquesContainer {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  grid-column-gap: 8px;
-  grid-row-gap: 8px;
-  justify-items: center;
-
-  margin: 0.2rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 0.5rem;
 }
 
 .pokemonGameIndices {
@@ -322,5 +357,37 @@ h4 {
   border-width: 1px;
   padding: 0.5rem;
   margin-top: 0.8rem;
+}
+
+.grupoNivel {
+  margin-bottom: 1.5rem;
+}
+
+.nivelHeader {
+  color: #444;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.ataquesPorNivelContainer {
+  padding: 0.5rem 1rem;
+}
+
+.ataquesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.ataqueCard {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 </style>
