@@ -43,19 +43,22 @@
     </div>
 
     <div class="pokemonEvolucoes">
-      <h2>Evoluções</h2>
-      <div v-for="(item, index) in pokemonEvolutions" :key="index">
-        {{ item }}
+      <h2 class="tituloSessao">Evoluções</h2>
+      <div class="evoluçaoContainer">
+        <template v-for="(item, index) in pokemonEvolutions" :key="index">
+          <div class="evolucao">{{ item }}</div>
+        </template>
       </div>
     </div>
-
     <div class="pokemonAtaques">
-      <h2>Ataques</h2>
-      <div v-for="(item, index) in pokemon?.moves" :key="index">
-        {{ item.move.name }}
-      </div>
+      <h2 class="tituloSessao">Ataques</h2>
+      <template class="ataquesContainer">
+        <div v-for="(item, index) in pokemon?.moves" :key="index">
+          {{ capitalizeFirstLetter(item.move.name) }}
+        </div></template
+      >
     </div>
-    <h2>Presença nos Games</h2>
+    <h2 class="tituloSessao">Presença nos Games</h2>
     <div class="pokemonGameIndices">
       <div
         class="imgGameContainer"
@@ -167,7 +170,7 @@ const typeColors = {
   fire: "#e08b4f",
   water: "#768fc9",
   bug: "#535353",
-  normal: "#A8A878",
+  normal: "#697c88",
   poison: "#966c96",
   electric: "#e0c865",
   ground: "#978451",
@@ -186,7 +189,7 @@ const typeColors = {
 
 <style scoped>
 * {
-  color: #070707;
+  color: #697c88;
 }
 
 .headerDetalhes {
@@ -228,6 +231,24 @@ h4 {
   margin: 1.5rem;
 }
 
+.evoluçaoContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.evolucao {
+  margin: 0.3rem;
+  padding: 0.5rem 2rem;
+  background-color: #f14040;
+
+  color: #e9e9e9;
+  border-radius: 10px;
+  text-transform: capitalize;
+}
+
 .pokemonTiposContainer {
   display: flex;
   flex-direction: row;
@@ -239,14 +260,26 @@ h4 {
   margin: 0.3rem;
   padding: 0.5rem 2rem;
   background-color: #f1f1f1;
-  border-radius: 8px;
+  border-radius: 20px;
   text-transform: capitalize;
+  color: rgb(32, 32, 32);
 }
 
 .pokemonEvolucoes,
 .pokemonAtaques,
 .pokemonGameIndices {
   margin-top: 2rem;
+}
+
+.ataquesContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 8px;
+  grid-row-gap: 8px;
+  justify-items: center;
+
+  margin: 1rem;
 }
 
 .pokemonGameIndices {
@@ -269,5 +302,15 @@ h4 {
 .imgGameIndice {
   height: 8rem;
   width: 8rem;
+}
+
+.tituloSessao {
+  text-align: center;
+  color: #e63c3c;
+  border-bottom: #d1d1d1;
+  border-bottom-style: solid;
+  border-width: 1px;
+  padding: 0.5rem;
+  margin-top: 0.8rem;
 }
 </style>
