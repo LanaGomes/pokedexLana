@@ -5,21 +5,15 @@
     <h3>Pesquisar por</h3>
     <select class="opcoesDePesquisa" v-model="tipoBuscaSelecionado">
       <option value="todos">Todos</option>
-      <option value="nome">Nome</option>
-      <option value="id">ID</option>
+      <option value="nome">Nome ou ID</option>
       <option value="tipo">Tipo</option>
     </select>
-    <div
-      class="barra-busca"
-      v-if="tipoBuscaSelecionado === 'nome' || tipoBuscaSelecionado === 'id'"
-    >
+    <div class="barra-busca" v-if="tipoBuscaSelecionado === 'nome'">
       <input
         class="campo-busca"
-        :type="tipoBuscaSelecionado === 'id' ? 'number' : 'text'"
+        type="text"
         v-model="valorBusca"
-        :placeholder="
-          tipoBuscaSelecionado === 'id' ? 'Digite o ID' : 'Digite o nome'
-        "
+        placeholder="Digite nome ou ID "
       />
     </div>
 
