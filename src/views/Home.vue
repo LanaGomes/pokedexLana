@@ -1,28 +1,35 @@
 <template>
   <NavBar />
-  <div class="barra-busca">
-    <button @click="alternarModoBusca" class="botao-alternar">
-      {{ modoBusca === "A" ? "#" : "A" }}
-    </button>
+
+  <section class="opcoesDePesquisaContainer">
+    <h3>Pesquisar por</h3>
+    <select class="opcoesDePesquisa" v-model="tipoBuscaSelecionado">
+      <option value="todos">Todos</option>
+      <option value="nome">Nome</option>
+      <option value="id">ID</option>
+      <option value="tipo">Tipo</option>
+    </select>
+  </section>
+
+  <div
+    class="barra-busca"
+    v-if="tipoBuscaSelecionado === 'nome' || tipoBuscaSelecionado === 'id'"
+  >
     <input
       class="campo-busca"
-      :type="modoBusca === 'A' ? 'text' : 'number'"
+      :type="tipoBuscaSelecionado === 'id' ? 'number' : 'text'"
       v-model="valorBusca"
-      :placeholder="modoBusca === 'A' ? 'Digite o nome' : 'Digite o ID'"
+      :placeholder="
+        tipoBuscaSelecionado === 'id' ? 'Digite o ID' : 'Digite o nome'
+      "
     />
     <img class="icone-busca" src="/src/assets/search.png" />
   </div>
 
-  <div class="filtro-tipo">
-    <header class="titulo-filtro">Filtrar</header>
-    <select v-model="tipoPokemonSelecionado" @change="filtrarPokemonPorTipo">
+  <div class="barra-busca" v-if="tipoBuscaSelecionado === 'tipo'">
+    <select v-model="valorBusca" @change="carregarPokemons">
       <option disabled value="">Selecione um tipo</option>
-      <option
-        class="opcao-tipo"
-        v-for="(tipo, index) in tiposPokemon"
-        :key="tipo"
-        :value="tipo"
-      >
+      <option v-for="tipo in tiposPokemon" :key="tipo" :value="tipo">
         {{ tipo }}
       </option>
     </select>
@@ -31,18 +38,23 @@
   <main class="galeria-pokemons">
     <div
       v-for="pokemon in listaPokemons"
+      :style="{
+        backgroundColor: typeColors[pokemon.types[0]?.type.name] || '#f1f1f1',
+      }"
       :key="pokemon.id"
       class="cartao-pokemon"
     >
       <router-link :to="{ name: 'detalhes', params: { id: pokemon.id } }">
-        <p class="id-pokemon"># {{ pokemon.id }}</p>
-
+        <p style="color: white" class="id-pokemon"># {{ pokemon.id }}</p>
         <img
+          style="width: 10rem; height: 10rem"
           :src="pokemon.sprites.front_default"
           :alt="pokemon.name"
           class="sprite-pokemon"
         />
-        <p class="nome-pokemon">{{ pokemon.name }}</p>
+        <p style="color: aliceblue" class="nome-pokemon">
+          {{ pokemon.name }}
+        </p>
       </router-link>
     </div>
 
@@ -56,85 +68,40 @@ import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
 
-const tipoPokemonSelecionado = ref("");
-const filtrarPokemonPorTipo = async () => {
-  if (!tipoPokemonSelecionado.value) return;
-
-  carregando.value = true;
-  mensagemErro.value = "";
-  listaPokemons.value = [];
-
-  try {
-    const response = await axios.get(
-      `https://pokeapi.co/api/v2/type/${tipoPokemonSelecionado.value}`
-    );
-    const listaPokemonsTipo = response.data.pokemon;
-
-    const detalhes = await Promise.all(
-      listaPokemonsTipo
-        .slice(0, 100)
-        .map((poke) => axios.get(poke.pokemon.url).then((res) => res.data))
-    );
-
-    listaPokemons.value = detalhes;
-  } catch (err) {
-    mensagemErro.value = "Erro ao carregar pokémons do tipo selecionado.";
-  } finally {
-    carregando.value = false;
-  }
-};
-
-const tiposPokemon = ref("#");
-
-onMounted(async () => {
-  const response = await fetch("https://pokeapi.co/api/v2/type/");
-  const data = await response.json();
-  tiposPokemon.value = data.results.map((tipo) => tipo.name);
-});
-
-const modoBusca = ref("#");
+const tipoBuscaSelecionado = ref("todos");
 const valorBusca = ref("");
-
-const alternarModoBusca = () => {
-  modoBusca.value = modoBusca.value === "A" ? "#" : "A";
-};
-
 const listaPokemons = ref([]);
+const tiposPokemon = ref([]);
 const carregando = ref(false);
 const mensagemErro = ref("");
 const paginacaoOffset = ref(0);
 const quantidadePorPagina = 500;
 
-async function carregarPokemons() {
+onMounted(async () => {
+  await carregarPokemons();
+  await carregarTipos();
+  window.addEventListener("scroll", aoRolarPagina);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", aoRolarPagina);
+});
+
+const carregarTipos = async () => {
+  const response = await axios.get("https://pokeapi.co/api/v2/type/");
+  tiposPokemon.value = response.data.results.map((tipo) => tipo.name);
+};
+
+const carregarPokemons = async () => {
   carregando.value = true;
   mensagemErro.value = "";
+  listaPokemons.value = [];
 
   try {
-    const termoBusca = valorBusca.value.toString().trim();
-
-    if (termoBusca !== "") {
-      if (modoBusca.value === "#") {
-        const id = parseInt(termoBusca);
-        if (isNaN(id)) {
-          mensagemErro.value = "ID inválido.";
-          return;
-        }
-
-        const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${id}`
-        );
-        listaPokemons.value = [response.data];
-      } else {
-        const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${termoBusca.toLowerCase()}`
-        );
-        listaPokemons.value = [response.data];
-      }
-    } else {
+    if (tipoBuscaSelecionado.value === "todos") {
       const response = await axios.get(
         `https://pokeapi.co/api/v2/pokemon?limit=${quantidadePorPagina}&offset=${paginacaoOffset.value}`
       );
-
       const resultados = response.data.results;
 
       const detalhes = await Promise.all(
@@ -143,32 +110,65 @@ async function carregarPokemons() {
         )
       );
 
-      listaPokemons.value.push(...detalhes);
+      listaPokemons.value = detalhes;
       paginacaoOffset.value += quantidadePorPagina;
+    } else if (tipoBuscaSelecionado.value === "nome") {
+      const nome = valorBusca.value.toLowerCase().trim();
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${nome}`
+      );
+      listaPokemons.value = [response.data];
+    } else if (tipoBuscaSelecionado.value === "id") {
+      const id = parseInt(valorBusca.value);
+      if (isNaN(id)) {
+        mensagemErro.value = "ID inválido.";
+        return;
+      }
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon/${id}`
+      );
+      listaPokemons.value = [response.data];
+    } else if (tipoBuscaSelecionado.value === "tipo") {
+      const response = await axios.get(
+        `https://pokeapi.co/api/v2/type/${valorBusca.value}`
+      );
+      const listaPokemonsTipo = response.data.pokemon;
+
+      const detalhes = await Promise.all(
+        listaPokemonsTipo
+          .slice(0, 100)
+          .map((poke) => axios.get(poke.pokemon.url).then((res) => res.data))
+      );
+
+      listaPokemons.value = detalhes;
     }
   } catch (err) {
     mensagemErro.value = "Pokémon não encontrado.";
   } finally {
     carregando.value = false;
   }
-}
+};
 
-let tempoDebounce;
-watch(valorBusca, () => {
-  clearTimeout(tempoDebounce);
-  tempoDebounce = setTimeout(async () => {
-    const termoBusca = String(valorBusca.value).trim();
-
-    if (tipoPokemonSelecionado.value && termoBusca !== "") {
-      tipoPokemonSelecionado.value = "";
-      listaPokemons.value = [];
-      paginacaoOffset.value = 0;
-    }
-
-    await carregarPokemons();
-  }, 500);
+watch(valorBusca, async (val) => {
+  if (
+    tipoBuscaSelecionado.value === "nome" ||
+    tipoBuscaSelecionado.value === "id"
+  ) {
+    clearTimeout(tempoDebounce);
+    tempoDebounce = setTimeout(() => {
+      carregarPokemons();
+    }, 500);
+  }
 });
 
+watch(tipoBuscaSelecionado, async (novoValor) => {
+  valorBusca.value = "";
+  listaPokemons.value = [];
+  paginacaoOffset.value = 0;
+  if (novoValor === "todos") await carregarPokemons();
+});
+
+let tempoDebounce;
 function aoRolarPagina() {
   const topoScroll = window.scrollY;
   const alturaJanela = window.innerHeight;
@@ -177,28 +177,34 @@ function aoRolarPagina() {
   if (
     topoScroll + alturaJanela >= alturaDocumento - 10 &&
     !carregando.value &&
-    valorBusca.value.trim() === "" &&
-    tipoPokemonSelecionado.value === ""
+    tipoBuscaSelecionado.value === "todos"
   ) {
     carregarPokemons();
   }
 }
-
-onMounted(() => {
-  carregarPokemons();
-  window.addEventListener("scroll", aoRolarPagina);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", aoRolarPagina);
-});
+const typeColors = {
+  grass: "#63c781",
+  fire: "#e08b4f",
+  water: "#768fc9",
+  bug: "#313131",
+  normal: "#A8A878",
+  poison: "#966c96",
+  electric: "#e0c865",
+  ground: "#978451",
+  fairy: "#EE99AC",
+  fighting: "#C03028",
+  psychic: "#F85888",
+  rock: "#757575",
+  ghost: "#705898",
+  ice: "#98D8D8",
+  dragon: "#8d68e6",
+  dark: "#1b1b1b",
+  steel: "#B8B8D0",
+  flying: "#dad6e6",
+};
 </script>
 
 <style scoped>
-li {
-  list-style: none;
-}
-
 .galeria-pokemons {
   flex-wrap: wrap;
   display: flex;
@@ -218,6 +224,15 @@ li {
   text-align: right;
   align-items: center;
   width: 12rem;
+
+  transition: background-color 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cartao-pokemon:hover {
+  transform: scale(1.05);
+  box-shadow: 8px 6px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 
 .id-pokemon {
