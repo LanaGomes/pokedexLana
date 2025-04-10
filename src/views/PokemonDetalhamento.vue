@@ -72,7 +72,7 @@
         v-for="(item, index) in pokemon?.game_indices"
         :key="index"
       >
-        <img class="imgGameIndice" :src="`/public/${item.version.name}.jpg`" />
+        <img class="imgGameIndice" :src="`/${item.version.name}.jpg`" />
         {{ capitalizeFirstLetter(item.version.name) }}
       </div>
       <div
