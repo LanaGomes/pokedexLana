@@ -237,10 +237,6 @@ const ataquesPorNivel = computed(() => {
 </script>
 
 <style scoped>
-* {
-  color: #697c88;
-}
-
 .headerDetalhes {
   background-color: transparent;
   padding: 0.2rem 0.5rem;
@@ -273,13 +269,6 @@ h4 {
   max-width: 300px;
 }
 
-.pokemonSprite {
-  height: 15rem;
-  width: auto;
-  display: block;
-  margin: 1.5rem;
-}
-
 .evoluçaoContainer {
   display: flex;
   flex-direction: row;
@@ -292,7 +281,6 @@ h4 {
   margin: 0.3rem;
   padding: 0.5rem 2rem;
   background-color: #f14040;
-
   color: #e9e9e9;
   border-radius: 10px;
   text-transform: capitalize;
@@ -320,11 +308,40 @@ h4 {
   margin-top: 2rem;
 }
 
+.ataquesPorNivelContainer {
+  margin-left: 2rem;
+  padding: 0.5rem 1rem;
+}
+
 .ataquesContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+
   gap: 10px;
   padding: 0.5rem;
+  max-width: 600px;
+}
+
+.ataqueCard {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  text-transform: capitalize;
+  font-weight: bold;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.grupoNivel {
+  margin-bottom: 1.5rem;
+}
+
+.nivelHeader {
+  color: #c53e3e;
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  border-bottom: 1px solid #b83f3f;
 }
 
 .pokemonGameIndices {
@@ -340,10 +357,6 @@ h4 {
   align-items: center;
 }
 
-.backgroundPokemon {
-  background-color: rgb(120, 185, 145);
-}
-
 .imgGameIndice {
   height: 8rem;
   width: 8rem;
@@ -352,42 +365,12 @@ h4 {
 .tituloSessao {
   text-align: center;
   color: #e63c3c;
-  border-bottom: #d1d1d1;
-  border-bottom-style: solid;
-  border-width: 1px;
+  border-bottom: #d1d1d1 solid 1px;
   padding: 0.5rem;
   margin-top: 0.8rem;
 }
 
-.grupoNivel {
-  margin-bottom: 1.5rem;
-}
-
-.nivelHeader {
-  color: #444;
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-  border-bottom: 1px solid #ccc;
-}
-
-.ataquesPorNivelContainer {
-  padding: 0.5rem 1rem;
-}
-
-.ataquesContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
-}
-
-.ataqueCard {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 0.5rem;
-  border-radius: 10px;
-  text-align: center;
-  text-transform: capitalize;
-  font-weight: bold;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.backgroundPokemon {
+  background-color: rgb(120, 185, 145);
 }
 </style>
