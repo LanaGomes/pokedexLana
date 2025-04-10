@@ -341,7 +341,6 @@ h4 {
   color: #c53e3e;
   font-size: 1.2rem;
   margin: 0.5rem 0;
-  border-bottom: 1px solid #b83f3f;
 }
 
 .pokemonGameIndices {
