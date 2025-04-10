@@ -343,13 +343,13 @@ const typeGradients = {
 .pokemonTiposContainer {
   display: flex;
   flex-direction: row;
-  gap: 5px;
+
   justify-content: center;
 }
 
 .pokemonTipos {
   margin: 0.6rem;
-  padding: 0.1rem 0.8rem;
+  padding: 0.1rem 0.2rem;
 
   align-content: center;
 
