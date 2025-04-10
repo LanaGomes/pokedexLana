@@ -57,13 +57,15 @@
         <p style="color: aliceblue" class="nome-pokemon">
           {{ capitalizeFirstLetter(pokemon.name) }}
         </p>
-        <div
-          v-for="(item, index) in pokemon?.types"
-          :key="index"
-          class="pokemonTipos"
+        <template class="pokemonTiposContainer">
+          <div
+            v-for="(item, index) in pokemon?.types"
+            :key="index"
+            class="pokemonTipos"
+          >
+            <span v-if="item.type.name">{{ item.type.name }}</span>
+          </div></template
         >
-          {{ item.type.name }}
-        </div>
       </router-link>
     </div>
 
@@ -131,6 +133,8 @@ const carregarPokemons = async () => {
       );
 
       listaPokemons.value = detalhes;
+      console.log(listaPokemons.value);
+
       paginacaoOffset.value += quantidadePorPagina;
     } else if (tipoBuscaSelecionado.value === "nome") {
       const nome = valorBusca.value.toLowerCase().trim();
@@ -335,10 +339,19 @@ const typeGradients = {
   margin-top: 2rem;
   color: #d75757;
 }
+
+.pokemonTiposContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
+}
+
 .pokemonTipos {
-  display: inline-block;
-  margin: 0.5rem;
-  padding: 0.1rem 0.4rem;
+  margin: 0.6rem;
+  padding: 0.1rem 0.8rem;
+
+  align-content: center;
 
   border-width: 1px;
   border-radius: 8px;
