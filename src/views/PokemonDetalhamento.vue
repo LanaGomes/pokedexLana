@@ -45,9 +45,16 @@
     <div class="pokemonEvolucoes">
       <h2 class="tituloSessao">Evoluções</h2>
       <div class="evoluçaoContainer">
-        <template v-for="(item, index) in pokemonEvolutions" :key="index">
+        <template
+          v-if="pokemonEvolutions.length > 0"
+          v-for="(item, index) in pokemonEvolutions"
+          :key="index"
+        >
           <div class="evolucao">{{ item }}</div>
         </template>
+        <div v-if="pokemonEvolutions.length == 0">
+          Este pokémon não evolui :(
+        </div>
       </div>
     </div>
     <div class="pokemonAtaques">
@@ -55,8 +62,8 @@
       <template class="ataquesContainer">
         <div v-for="(item, index) in pokemon?.moves" :key="index">
           {{ capitalizeFirstLetter(item.move.name) }}
-        </div></template
-      >
+        </div>
+      </template>
     </div>
     <h2 class="tituloSessao">Presença nos Games</h2>
     <div class="pokemonGameIndices">
@@ -70,6 +77,12 @@
           :src="`/src/assets/game_indices/${item.version.name}.jpg`"
         />
         {{ capitalizeFirstLetter(item.version.name) }}
+      </div>
+      <div
+        style="padding-bottom: 1rem; margin-inline: 0.5rem; text-align: center"
+        v-if="pokemon?.game_indices.length == 0"
+      >
+        Este pokémon não aparece em jogo algum :O
       </div>
     </div>
   </footer>
@@ -279,7 +292,7 @@ h4 {
   grid-row-gap: 8px;
   justify-items: center;
 
-  margin: 1rem;
+  margin: 0.2rem;
 }
 
 .pokemonGameIndices {
