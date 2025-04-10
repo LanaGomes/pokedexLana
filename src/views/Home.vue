@@ -9,36 +9,39 @@
       <option value="id">ID</option>
       <option value="tipo">Tipo</option>
     </select>
+    <div
+      class="barra-busca"
+      v-if="tipoBuscaSelecionado === 'nome' || tipoBuscaSelecionado === 'id'"
+    >
+      <input
+        class="campo-busca"
+        :type="tipoBuscaSelecionado === 'id' ? 'number' : 'text'"
+        v-model="valorBusca"
+        :placeholder="
+          tipoBuscaSelecionado === 'id' ? 'Digite o ID' : 'Digite o nome'
+        "
+      />
+    </div>
+
+    <div class="barra-busca" v-if="tipoBuscaSelecionado === 'tipo'">
+      <select
+        class="opcoesTipo"
+        v-model="valorBusca"
+        @change="carregarPokemons"
+      >
+        <option disabled value="">Selecione um tipo</option>
+        <option v-for="tipo in tiposPokemon" :key="tipo" :value="tipo">
+          {{ tipo }}
+        </option>
+      </select>
+    </div>
   </section>
-
-  <div
-    class="barra-busca"
-    v-if="tipoBuscaSelecionado === 'nome' || tipoBuscaSelecionado === 'id'"
-  >
-    <input
-      class="campo-busca"
-      :type="tipoBuscaSelecionado === 'id' ? 'number' : 'text'"
-      v-model="valorBusca"
-      :placeholder="
-        tipoBuscaSelecionado === 'id' ? 'Digite o ID' : 'Digite o nome'
-      "
-    />
-  </div>
-
-  <div class="barra-busca" v-if="tipoBuscaSelecionado === 'tipo'">
-    <select class="opcoesTipo" v-model="valorBusca" @change="carregarPokemons">
-      <option disabled value="">Selecione um tipo</option>
-      <option v-for="tipo in tiposPokemon" :key="tipo" :value="tipo">
-        {{ tipo }}
-      </option>
-    </select>
-  </div>
 
   <main class="galeria-pokemons">
     <div
       v-for="pokemon in listaPokemons"
       :style="{
-        backgroundColor: typeColors[pokemon.types[0]?.type.name] || '#f1f1f1',
+        background: typeGradients[pokemon.types[0]?.type.name] || '#f1f1f1',
       }"
       :key="pokemon.id"
       class="cartao-pokemon"
@@ -46,7 +49,7 @@
       <router-link :to="{ name: 'detalhes', params: { id: pokemon.id } }">
         <p style="color: white" class="id-pokemon"># {{ pokemon.id }}</p>
         <img
-          style="width: 10rem; height: 10rem"
+          style="width: 8rem; height: 8rem"
           :src="pokemon.sprites.front_default"
           :alt="pokemon.name"
           class="sprite-pokemon"
@@ -54,10 +57,23 @@
         <p style="color: aliceblue" class="nome-pokemon">
           {{ pokemon.name }}
         </p>
+        <div
+          v-for="(item, index) in pokemon?.types"
+          :key="index"
+          class="pokemonTipos"
+        >
+          {{ item.type.name }}
+        </div>
       </router-link>
     </div>
 
-    <div v-if="carregando" class="mensagem-carregando">Carregando mais...</div>
+    <div v-if="carregando" class="mensagem-carregando">
+      <img
+        class="gif-carregando"
+        alt="carregando..."
+        src="/src/assets/carregando.gif"
+      />
+    </div>
     <div v-if="mensagemErro" class="mensagem-erro">{{ mensagemErro }}</div>
   </main>
 </template>
@@ -119,7 +135,7 @@ const carregarPokemons = async () => {
       listaPokemons.value = [response.data];
     } else if (tipoBuscaSelecionado.value === "id") {
       const id = parseInt(valorBusca.value);
-      if (isNaN(id)) {
+      if (id !== "" && isNaN(id)) {
         mensagemErro.value = "ID inválido.";
         return;
       }
@@ -181,25 +197,25 @@ function aoRolarPagina() {
     carregarPokemons();
   }
 }
-const typeColors = {
-  grass: "#63c781",
-  fire: "#e08b4f",
-  water: "#768fc9",
-  bug: "#313131",
-  normal: "#A8A878",
-  poison: "#966c96",
-  electric: "#e0c865",
-  ground: "#978451",
-  fairy: "#EE99AC",
-  fighting: "#C03028",
-  psychic: "#F85888",
-  rock: "#757575",
-  ghost: "#705898",
-  ice: "#98D8D8",
-  dragon: "#8d68e6",
-  dark: "#1b1b1b",
-  steel: "#B8B8D0",
-  flying: "#dad6e6",
+const typeGradients = {
+  grass: "linear-gradient(135deg, #63c781, #3ea06a)",
+  fire: "linear-gradient(135deg, #e08b4f, #e86028)",
+  water: "linear-gradient(135deg, #768fc9, #4b6eb1)",
+  bug: "linear-gradient(135deg, #313131, #1f1f1f)",
+  normal: "linear-gradient(135deg, #A8A878, #888866)",
+  poison: "linear-gradient(135deg, #966c96, #774977)",
+  electric: "linear-gradient(135deg, #e0c865, #d4b53f)",
+  ground: "linear-gradient(135deg, #978451, #7d6b3a)",
+  fairy: "linear-gradient(135deg, #EE99AC, #e77d94)",
+  fighting: "linear-gradient(135deg, #C03028, #8a1e1a)",
+  psychic: "linear-gradient(135deg, #F85888, #d84070)",
+  rock: "linear-gradient(135deg, #757575, #555555)",
+  ghost: "linear-gradient(135deg, #705898, #4e3d6d)",
+  ice: "linear-gradient(135deg, #98D8D8, #79bcbc)",
+  dragon: "linear-gradient(135deg, #8d68e6, #6f48c8)",
+  dark: "linear-gradient(135deg, #1b1b1b, #000000)",
+  steel: "linear-gradient(135deg, #B8B8D0, #9898b0)",
+  flying: "linear-gradient(135deg, #dad6e6, #bcb8ce)",
 };
 </script>
 
@@ -236,11 +252,21 @@ const typeColors = {
 
 .id-pokemon {
   margin: 0.6rem 0.6rem 0 0;
+  text-align: center;
+
+  font-weight: bolder;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  color: white; /* ou um tom claro */
+  font-weight: bold;
 }
 
 .nome-pokemon {
   text-align: center;
   margin: 0 0 5px 0;
+  font-weight: bolder;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  color: white; /* ou um tom claro */
+  font-weight: bold;
 }
 
 .sprite-pokemon {
@@ -267,9 +293,9 @@ const typeColors = {
 
 .campo-busca {
   color: black;
-  width: 50%;
+  width: 80%;
   font-size: 1rem;
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 50px;
   border-style: none;
   background-color: white;
@@ -287,13 +313,14 @@ const typeColors = {
   border-radius: 8px;
 }
 
-.opcoesDePesquisa {
-}
-
 .opcoesDePesquisaContainer {
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 2rem;
   color: #d75757;
+
+  flex-wrap: wrap;
 }
 
 .mensagem-carregando,
@@ -302,5 +329,23 @@ const typeColors = {
   font-size: 1.2rem;
   margin-top: 2rem;
   color: #d75757;
+}
+.pokemonTipos {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.1rem 0.4rem;
+
+  border-width: 1px;
+  border-radius: 8px;
+  text-transform: capitalize;
+  background-color: rgba(245, 245, 245, 0.63);
+  color: rgb(59, 59, 59);
+}
+
+.gif-carregando {
+  width: 100px;
+  height: 100px;
+  display: block;
+  margin: 0 auto;
 }
 </style>
