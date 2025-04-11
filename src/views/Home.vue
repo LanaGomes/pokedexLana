@@ -5,19 +5,19 @@
     <a @click="setLanguage('pt')">
       <img
         style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
-        src="/public/brazilLogo.png"
+        src="/brazilLogo.png"
       />
     </a>
     <a @click="setLanguage('en')">
       <img
         style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
-        src="/public/euaLogo.png"
+        src="/euaLogo.png"
       />
     </a>
     <a @click="setLanguage('es')">
       <img
         style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
-        src="/public/espanhaLogo.png"
+        src="/espanhaLogo.png"
       />
     </a>
   </div>
@@ -85,11 +85,7 @@
     </div>
 
     <div v-if="carregando" class="mensagem-carregando">
-      <img
-        class="gif-carregando"
-        alt="carregando..."
-        src="/public/carregando.gif"
-      />
+      <img class="gif-carregando" alt="carregando..." src="/carregando.gif" />
     </div>
     <div v-if="mensagemErro" class="mensagem-erro">{{ mensagemErro }}</div>
   </main>
