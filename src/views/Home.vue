@@ -1,12 +1,33 @@
 <template>
   <NavBar />
 
+  <div class="bandeirasContainer" style="margin: 0.5rem">
+    <a @click="setLanguage('pt')">
+      <img
+        style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
+        src="/public/brazilLogo.png"
+      />
+    </a>
+    <a @click="setLanguage('en')">
+      <img
+        style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
+        src="/public/euaLogo.png"
+      />
+    </a>
+    <a @click="setLanguage('es')">
+      <img
+        style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
+        src="/public/espanhaLogo.png"
+      />
+    </a>
+  </div>
+
   <section class="opcoesDePesquisaContainer">
-    <h3>Pesquisar por</h3>
+    <h3>{{ $t("geral.Search for") }}</h3>
     <select class="opcoesDePesquisa" v-model="tipoBuscaSelecionado">
-      <option value="todos">Todos</option>
-      <option value="nome">Nome ou ID</option>
-      <option value="tipo">Tipo</option>
+      <option value="todos">{{ $t("geral.Todos") }}</option>
+      <option value="nome">{{ $t("geral.Nome ou ID") }}</option>
+      <option value="tipo">{{ $t("geral.Tipo") }}</option>
     </select>
     <div class="barra-busca" v-if="tipoBuscaSelecionado === 'nome'">
       <input
@@ -57,7 +78,9 @@
             :key="index"
             class="pokemonTipos"
           >
-            <span v-if="item.type.name">{{ item.type.name }}</span>
+            <span v-if="item.type.name">{{
+              $t(`tipos.${item.type.name}`)
+            }}</span>
           </div></template
         >
       </router-link>
@@ -78,6 +101,14 @@
 import { onMounted, onBeforeUnmount, ref, watch } from "vue";
 import axios from "axios";
 import NavBar from "../components/NavBar.vue";
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
+
+function setLanguage(lang) {
+  locale.value = lang;
+  localStorage.setItem("locale", lang);
+}
 
 const tipoBuscaSelecionado = ref("todos");
 const valorBusca = ref("");
@@ -125,6 +156,15 @@ const carregarPokemons = async () => {
           axios.get(pokemon.url).then((res) => res.data)
         )
       );
+
+      for (const pokemon of detalhes) {
+        const nomeTraduzido = await getPokemonLocalizedName(
+          pokemon.id,
+          locale.value
+        );
+        pokemon.localizedName =
+          nomeTraduzido || capitalizeFirstLetter(pokemon.name);
+      }
 
       listaPokemons.value = detalhes;
       console.log(listaPokemons.value);
@@ -300,7 +340,9 @@ const typeGradients = {
   font-size: 1rem;
   padding: 0.8rem;
   border-radius: 50px;
-  border-style: none;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(212, 212, 212);
   background-color: white;
   box-shadow: inset -2px 2px 3px 2px rgba(32, 32, 32, 0.2);
 }
@@ -320,7 +362,7 @@ const typeGradients = {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 2rem;
+
   color: #d75757;
 
   flex-wrap: wrap;
