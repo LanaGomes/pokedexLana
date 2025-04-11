@@ -30,6 +30,26 @@
       </Carousel>
     </section>
   </div>
+  <div class="bandeirasContainer" style="margin: 0.5rem">
+    <a @click="setLanguage('pt')">
+      <img
+        style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
+        src="/public/brazilLogo.png"
+      />
+    </a>
+    <a @click="setLanguage('en')">
+      <img
+        style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
+        src="/public/euaLogo.png"
+      />
+    </a>
+    <a @click="setLanguage('es')">
+      <img
+        style="margin-inline: 8px; width: 2.5rem; height: 2.5rem"
+        src="/public/espanhaLogo.png"
+      />
+    </a>
+  </div>
   <footer>
     <div class="pokemonTiposContainer">
       <div
@@ -38,7 +58,7 @@
         :style="{ backgroundColor: typeColors[item.type.name] || '#f1f1f1' }"
         class="pokemonTipos"
       >
-        {{ item.type.name }}
+        {{ $t(`tipos.${item.type.name}`) }}
       </div>
     </div>
 
@@ -102,9 +122,17 @@
 import { RouterLink, useRoute } from "vue-router";
 import axios from "axios";
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
 
 import "vue3-carousel/carousel.css";
 import { Carousel, Slide, Navigation, Pagination } from "vue3-carousel";
+
+function setLanguage(lang) {
+  locale.value = lang;
+  localStorage.setItem("locale", lang);
+}
 
 function capitalizeFirstLetter(string) {
   if (!string) return string;

@@ -44,9 +44,9 @@
         v-model="valorBusca"
         @change="carregarPokemons"
       >
-        <option disabled value="">Selecione um tipo</option>
+        <option disabled value="">{{ $t("geral.Selecione um tipo") }}</option>
         <option v-for="tipo in tiposPokemon" :key="tipo" :value="tipo">
-          {{ tipo }}
+          {{ $t(`tipos.${tipo}`) }}
         </option>
       </select>
     </div>
@@ -69,21 +69,19 @@
           :alt="pokemon.name"
           class="sprite-pokemon"
         />
-        <p style="color: aliceblue" class="nome-pokemon">
-          {{ capitalizeFirstLetter(pokemon.name) }}
-        </p>
-        <template class="pokemonTiposContainer">
-          <div
-            v-for="(item, index) in pokemon?.types"
-            :key="index"
-            class="pokemonTipos"
-          >
-            <span v-if="item.type.name">{{
-              $t(`tipos.${item.type.name}`)
-            }}</span>
-          </div></template
-        >
       </router-link>
+      <p style="color: aliceblue" class="nome-pokemon">
+        {{ capitalizeFirstLetter(pokemon.name) }}
+      </p>
+      <template class="pokemonTiposContainer">
+        <div
+          v-for="(item, index) in pokemon?.types"
+          :key="index"
+          class="pokemonTipos"
+        >
+          <span v-if="item.type.name">{{ $t(`tipos.${item.type.name}`) }}</span>
+        </div></template
+      >
     </div>
 
     <div v-if="carregando" class="mensagem-carregando">
@@ -156,15 +154,6 @@ const carregarPokemons = async () => {
           axios.get(pokemon.url).then((res) => res.data)
         )
       );
-
-      for (const pokemon of detalhes) {
-        const nomeTraduzido = await getPokemonLocalizedName(
-          pokemon.id,
-          locale.value
-        );
-        pokemon.localizedName =
-          nomeTraduzido || capitalizeFirstLetter(pokemon.name);
-      }
 
       listaPokemons.value = detalhes;
       console.log(listaPokemons.value);
@@ -385,7 +374,7 @@ const typeGradients = {
 
 .pokemonTipos {
   margin: 0.6rem;
-  padding: 0.1rem 0.2rem;
+  padding: 0.1rem 0.4rem;
 
   align-content: center;
 
