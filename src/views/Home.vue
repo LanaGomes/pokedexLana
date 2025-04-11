@@ -181,7 +181,7 @@ watch(valorBusca, async (val) => {
 
 watch(tipoBuscaSelecionado, async (novoValor) => {
   valorBusca.value = "";
-  listaPokemons.value = [];
+
   paginacaoOffset.value = 0;
   if (novoValor === "todos") await carregarPokemons();
 });
