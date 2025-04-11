@@ -1,0 +1,59 @@
+{
+  "geral": {
+    "Search for": "Search for",
+    "Pesquisar por": "Search for",
+    "Buscar por": "Search for",
+
+    "Todos": "All",
+    "Nome ou ID": "Name or ID",
+    "Tipo": "Type",
+
+    "Digite nome ou ID": "Enter name or ID",
+    "Enter name or ID": "Enter name or ID",
+    "Ingrese nombre o ID": "Enter name or ID",
+
+    "Selecione um tipo": "Select a type",
+    "Select a type": "Select a type",
+    "Seleccione un tipo": "Select a type",
+
+    "carregando...": "loading...",
+    "loading...": "loading...",
+    "cargando...": "loading...",
+
+    "Pokémon não encontrado.": "Pokémon not found.",
+    "Pokémon not found.": "Pokémon not found.",
+    "Pokémon no encontrado.": "Pokémon not found.",
+
+    "Carregando...": "Loading...",
+    "Loading...": "Loading...",
+    "Cargando...": "Loading...",
+
+    "Evoluções": "Evolutions",
+    "Evolutions": "Evolutions",
+    "Evoluciones": "Evolutions",
+
+    "Este pokémon não evolui :(": "This Pokémon doesn't evolve :(",
+    "This Pokémon doesn't evolve :(": "This Pokémon doesn't evolve :(",
+    "Este Pokémon no evoluciona :(": "This Pokémon doesn't evolve :(",
+
+    "Ataques por Nível": "Level-based Attacks",
+    "Level-based Attacks": "Level-based Attacks",
+    "Ataques por nivel": "Level-based Attacks",
+
+    "Nível": "Level",
+    "Level": "Level",
+    "Nivel": "Level",
+
+    "Presença nos Games": "Presence in Games",
+    "Presence in Games": "Presence in Games",
+    "Presencia en los Juegos": "Presence in Games",
+
+    "Este pokémon não aparece em jogo algum :O": "This Pokémon doesn't appear in any game :O",
+    "This Pokémon doesn't appear in any game :O": "This Pokémon doesn't appear in any game :O",
+    "Este Pokémon no aparece en ningún juego :O": "This Pokémon doesn't appear in any game :O",
+
+    "Erro ao carregar o Pokémon.": "Error loading the Pokémon.",
+    "Error loading the Pokémon.": "Error loading the Pokémon.",
+    "Error al cargar el Pokémon.": "Error loading the Pokémon."
+  }
+}

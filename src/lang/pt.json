@@ -1,0 +1,80 @@
+{
+  "geral": {
+    "Search for": "Pesquisar por",
+    "Pesquisar por": "Pesquisar por",
+    "Buscar por": "Pesquisar por",
+
+    "Todos": "Todos",
+    "Nome ou ID": "Nome ou ID",
+    "Tipo": "Tipo",
+
+    "Digite nome ou ID": "Digite nome ou ID",
+    "Enter name or ID": "Digite nome ou ID",
+    "Ingrese nombre o ID": "Digite nome ou ID",
+
+    "Selecione um tipo": "Selecione um tipo",
+    "Select a type": "Selecione um tipo",
+    "Seleccione un tipo": "Selecione um tipo",
+
+    "carregando...": "carregando...",
+    "loading...": "carregando...",
+    "cargando...": "carregando...",
+
+    "Pokémon não encontrado.": "Pokémon não encontrado.",
+    "Pokémon not found.": "Pokémon não encontrado.",
+    "Pokémon no encontrado.": "Pokémon não encontrado.",
+
+    "Carregando...": "Carregando...",
+    "Loading...": "Carregando...",
+    "Cargando...": "Carregando...",
+
+    "Evoluções": "Evoluções",
+    "Evolutions": "Evoluções",
+    "Evoluciones": "Evoluções",
+
+    "Este pokémon não evolui :(": "Este pokémon não evolui :(",
+    "This Pokémon doesn't evolve :(": "Este pokémon não evolui :(",
+    "Este Pokémon no evoluciona :(": "Este pokémon não evolui :(",
+
+    "Ataques por Nível": "Ataques por Nível",
+    "Level-based Attacks": "Ataques por Nível",
+    "Ataques por nivel": "Ataques por Nível",
+
+    "Nível": "Nível",
+    "Level": "Nível",
+    "Nivel": "Nível",
+
+    "Presença nos Games": "Presença nos Games",
+    "Presence in Games": "Presença nos Games",
+    "Presencia en los Juegos": "Presença nos Games",
+
+    "Este pokémon não aparece em jogo algum :O": "Este pokémon não aparece em jogo algum :O",
+    "This Pokémon doesn't appear in any game :O": "Este pokémon não aparece em jogo algum :O",
+    "Este Pokémon no aparece en ningún juego :O": "Este pokémon não aparece em jogo algum :O",
+
+    "Erro ao carregar o Pokémon.": "Erro ao carregar o Pokémon.",
+    "Error loading the Pokémon.": "Erro ao carregar o Pokémon.",
+    "Error al cargar el Pokémon.": "Erro ao carregar o Pokémon."
+  },
+
+  "tipos": {
+    "normal": "Normal",
+    "fire": "Fogo",
+    "water": "Água",
+    "electric": "Elétrico",
+    "grass": "Grama",
+    "ice": "Gelo",
+    "fighting": "Lutador",
+    "poison": "Venenoso",
+    "ground": "Terra",
+    "flying": "Voador",
+    "psychic": "Psíquico",
+    "bug": "Inseto",
+    "rock": "Pedra",
+    "ghost": "Fantasma",
+    "dragon": "Dragão",
+    "dark": "Sombrio",
+    "steel": "Metálico",
+    "fairy": "Fada"
+  }
+}

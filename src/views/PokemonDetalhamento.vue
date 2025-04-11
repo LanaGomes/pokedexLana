@@ -2,7 +2,7 @@
   <div
     class="backgroundPokemon"
     :style="{
-      backgroundColor: typeColors[pokemon?.types?.[0]?.type?.name] || '#78B991',
+      backgroundColor: typeColors[pokemon?.types[0]?.type?.name] || '#78B991',
     }"
   >
     <header class="headerDetalhes">
@@ -10,7 +10,7 @@
         <RouterLink to="/">
           <img id="imgSeta" src="/public/setaParaEsquerda.png" />
         </RouterLink>
-        <h4 v-if="loading">Carregando...</h4>
+        <h4 v-if="loading">{{ $t("geral.Carregando...") }}</h4>
         <h4 v-if="error">{{ error }}</h4>
         <h3>{{ capitalizeFirstLetter(pokemon?.name) }}</h3>
       </div>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="pokemonEvolucoes">
-      <h2 class="tituloSessao">Evoluções</h2>
+      <h2 class="tituloSessao">{{ $t("geral.Evoluções") }}</h2>
       <div class="evoluçaoContainer">
         <template
           v-if="pokemonEvolutions.length > 0"
@@ -53,19 +53,19 @@
           <div class="evolucao">{{ item }}</div>
         </template>
         <div v-if="pokemonEvolutions.length == 0">
-          Este pokémon não evolui :(
+          {{ $t("geral.Este pokémon não evolui :(") }}
         </div>
       </div>
     </div>
     <div class="pokemonAtaques">
-      <h2 class="tituloSessao">Ataques por Nível</h2>
+      <h2 class="tituloSessao">{{ $t("geral.Ataques por Nível") }}</h2>
       <div class="ataquesPorNivelContainer">
         <div
           v-for="(ataques, nivel) in ataquesPorNivel"
           :key="nivel"
           class="grupoNivel"
         >
-          <h3 class="nivelHeader">Nível {{ nivel }}</h3>
+          <h3 class="nivelHeader">{{ $t("geral.Nível") }} {{ nivel }}</h3>
           <div class="ataquesContainer">
             <div
               v-for="(ataque, index) in ataques"
@@ -78,7 +78,7 @@
         </div>
       </div>
     </div>
-    <h2 class="tituloSessao">Presença nos Games</h2>
+    <h2 class="tituloSessao">{{ $t("geral.Presença nos Games") }}</h2>
     <div class="pokemonGameIndices">
       <div
         class="imgGameContainer"
@@ -92,7 +92,7 @@
         style="padding-bottom: 1rem; margin-inline: 0.5rem; text-align: center"
         v-if="pokemon?.game_indices.length == 0"
       >
-        Este pokémon não aparece em jogo algum :O
+        {{ $t("geral.Este pokémon não aparece em jogo algum :O") }}
       </div>
     </div>
   </footer>
@@ -180,7 +180,7 @@ async function fetchPokemon() {
     pokemonEvolutions.value = arrayAuxiliar;
   } catch (err) {
     console.error(err);
-    error.value = "Erro ao carregar o Pokémon.";
+    error.value = $t("geral.Erro ao carregar o Pokémon.");
   } finally {
     loading.value = false;
   }
